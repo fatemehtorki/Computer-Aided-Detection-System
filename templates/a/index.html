@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="en" dir="rtl">
+{#{% load staticfiles %}#}
+{% load static %}
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <meta charset="UTF-8">
+    <title>CADS</title>
+    <link rel="stylesheet" href="{% static  "assets/css/style.css" %}">
+    <link rel="stylesheet" href="{% static  "assets/css/framework-style/bootstrap.min.css" %}">
+    <link rel="stylesheet" href="{% static "assets/css/framework-style/bootstrap-rtl.css" %}">
+    <link rel="stylesheet" href="{% static "assets/css/framework-style/semantic.min.css" %}">
+    <link rel="stylesheet" href="{% static "assets/css/framework-style/uikit-rtl.min.css" %}">
+    <link rel="stylesheet" href="{% static "assets/css/framework-style/icon.min.css" %}">
+    <link rel="stylesheet" type="text/css" href="{% static "assets/css/jquery_datatable.css" %}">
+    <style>
+        .size {
+            width: 60px;
+        !important;
+            height: 60px;
+        !important;
+        }
+
+    </style>
+
+</head>
+<body>
+
+<div id="container">
+
+
+    <div id="top" class="uk-box-shadow-small">
+        <p class="title-top">Computer Aided Detection System</p>
+    </div>
+
+
+    <div id="main">
+
+
+        <div id="content" class="uk-box-shadow-large">
+            <div class="ui top attached tabular menu">
+                <a class="item active" data-tab="first"><i style="font-size: 25px" class='fas fa-file-import'></i>&nbsp;&nbsp;PREDICT
+                </a>
+                <a class="item " data-tab="second"> <i style="font-size: 25px" class='fas fa-list-ol'></i>&nbsp;&nbsp;
+                    LOG </a>
+            </div>
+
+
+            <div class="ui bottom attached active tab segment" data-tab="first">
+                <form id="form1">
+                    <p id="message" class="uk-margin-bottom">Dear user, please select your model and then load the
+                        relevant photo and click on the display result</p>
+                    <!-- dis box><!--->
+                    <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12 uk-margin-bottom">
+                        <div class="ui form">
+                            <div class="field">
+                                <label>Select Model</label>
+                                <select name="withModel" id="dis" class="ui m fluid dropdown">
+                                    <option value="" selected disabled>Select</option>
+                                    {#                                {% for model in dis %}#}
+                                    {#                                    <option value=""></option>#}
+                                    {#                                {% endfor %}#}
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <!--  picture box><!-->
+                    <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+                        <div class="js-upload uk-placeholder uk-text-center" style="min-height:200px;">
+                            <div id="area">
+
+                                <div uk-form-custom>
+                                    <span uk-icon="icon: cloud-upload"></span>
+                                    <span class="uk-text-middle">Drop photo here or </span>
+                                    <input type="file" name="orgImg" multiple id="input-image"
+                                           onchange="show_image(this.files)">
+                                    <span class="uk-link">select</span>
+                                </div>
+                            </div>
+                            <div style="clear: both"></div>
+                            <img id="img-area" src="" alt="">
+                        </div>
+                    </div>
+                    <div style="clear: both"></div>
+                    <div class="ui buttons uk-margin-bottom">
+                        {#                    onclick="send_orgpic()#}
+                        <button name="Display" class="ui n positive button" type="submit" id="show-result">Display
+                            result
+                        </button>
+                        <div class="or"></div>
+                        <button class="ui button" id="clear">Switch photo</button>
+                    </div>
+                </form>
+
+                <div id="result1" style="display:none">
+                    <form id="form2">
+                        <h4 class="ui horizontal divider header" style="font-family: fati">
+                            &nbsp;predict result&nbsp;
+                            <i class="fas fa-angle-down	"></i>&nbsp;
+                        </h4>
+
+                        <div id="result-area" class="uk-box-shadow-large">
+{#                            <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12 uk-margin-bottom">#}
+{#                                <p class="title-result">Heatmap</p>#}
+{#                                <img src="" alt="" class="uk-box-shadow-large" id="hit-map">#}
+{#                            </div>#}
+                            <div id="error"  class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+                                <p  class="title-result">Label</p>
+                                <input type="text" class="uk-input uk-margin-bottom" name="tempPredict" readonly
+                                       id="result-input">
+                                <div class="ui buttons ">
+                                    <button name="submit" id="" type="submit" class="ui Confirm positive button">create heatmap
+                                    </button>
+                                     <div class="or"></div>
+                                <button class="ui button" id="edit-result">edit predict</button>
+                                       <div class="or"></div>
+                                <button class="ui finish negative button" id="finish-result">finish here</button>
+                                </div>
+                            </div>
+                            <div style="clear: both"></div>
+
+                        </div>
+                    </form>
+                </div>
+
+
+                 <div id="result2" style="display:none">
+{#                    <form id="form3" method="">#}
+
+                        <h4 class="ui horizontal divider header" style="font-family: fati">
+                            heatmap result&nbsp;
+                            <i class="fas fa-angle-down	"></i>&nbsp;
+                        </h4>
+
+                        <div id="result-area"  style="display:block" class="uk-box-shadow-large">
+
+                            <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12 uk-margin-bottom">
+
+                                <p class="title-result">Heatmap</p>
+                                <img src="" alt="" class="uk-box-shadow-large" id="hit-map">
+                            </div>
+                            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                               <div class="ui buttons ">
+                                    <button name="submit" id="sasa"  class="ui as finalConfirm positive button">submit result
+{#                                    <button name="submit" id="sasa" type="submit" class="ui finalConfirm positive button">submit result#}
+                                    </button>
+                                    </div>
+                            </div>
+                            <div class="ooo" style="clear: both"></div>
+                        </div>
+{#                    </form>#}
+                </div>
+            </div>
+
+            <div class="ui bottom attached tab segment" data-tab="second">
+
+
+                <table id="table_id" data-order='[[ 1, "asc" ]]' class="display" data-page-length='5'>
+                    <thead>
+                    <tr id="tr">
+                        <th>date</th>
+                        <th>Model</th>
+                        <th>label</th>
+                        <th>image_origin</th>
+                        <th>hitmap</th>
+                    </tr>
+                    </thead>
+                    <tbody id="c">
+                    <tr>
+
+                    </tr>
+
+                    </tbody>
+
+                </table>
+            </div>
+
+        </div>
+
+
+        <div id="footer">
+            <p id="footer-text"> fatitorki97@gmail.com &copy  2019</p>
+{#            <p id="footer-text"></p>#}
+        </div>
+
+
+    </div>
+
+
+    <script type="text/javascript" src="{% static "assets/js/framework-script/jquery.min.js" %}"></script>
+    <script type="text/javascript" src="{% static  "assets/js/main.js" %}"></script>
+    <script type="text/javascript" src="{% static "assets/js/framework-script/bootstrap.min.js" %}"></script>
+    <script type="text/javascript" src="{% static "assets/js/framework-script/semantic.min.js" %}"></script>
+    <script type="text/javascript" src="{% static "assets/js/framework-script/uikit.min.js" %}"></script>
+    <script type="text/javascript" src="{% static "assets/js/framework-script/uikit-icons.js" %}"></script>
+        <script src="{% static 'assets/js/firstLoadPage.js' %}"></script>
+
+    <script type="text/javascript" src="{% static "assets/js/script.js" %}"></script>
+    <script type="text/javascript" charset="utf8" src="{% static "assets/js/jquery_datatable.js" %}"></script>
+    <script>
+        $(document).ready(function () {
+            $('#table_id').DataTable();
+        });
+        $.extend($.fn.dataTable.defaults, {
+            searching: false,
+            ordering: false
+        });
+
+{#        $(document).ready( function () {#}
+{#    $('#table_id').DataTable({#}
+{#        ordering: true#}
+{#    });#}
+//{#} );#}
+
+    </script>
+
+    <script type="text/javascript">
+    </script>
+</div>
+</body>
+
+</html>
+
